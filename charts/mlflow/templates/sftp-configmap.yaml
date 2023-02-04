@@ -1,0 +1,11 @@
+# ssh-config for sftp 
+{{- if .Values.artifacts.sftp.existingSecret -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mlflow.fullname" . }}-ssh-config
+data:
+  config: |
+    Host {{ .Values.artifacts.sftp.defaultArtifactRoot }}
+	          IdentityFile ~/.ssh/cert
+{{- end }}
