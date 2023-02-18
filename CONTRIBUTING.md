@@ -35,6 +35,9 @@ We welcome community contributions to MLflow. This page provides useful informat
   - [Developing inside a Docker container (experimental)](#developing-inside-a-docker-container-experimental)
     - [Prerequisites](#prerequisites)
     - [Setup](#setup)
+  - [Kubernetes](#Kubernetes)
+    - [Prerequisites](#prerequisites)
+    - [Setup](#setup)
   - [Writing MLflow Examples](#writing-mlflow-examples)
   - [Building a Distributable Artifact](#building-a-distributable-artifact)
   - [Writing Docs](#writing-docs)
@@ -723,6 +726,47 @@ Now you can attach to the running container with your code editor.
 After typing `exit` in the terminal window that executed
 `dev/run-test-container.sh`, the container will be shut down and
 removed.
+
+### Kubernetes
+
+To test changes or new features to the helm charts a local cluster can
+be setup with scripts to save configuring your own cluster.
+
+#### Prerequisites
+
+- Docker runtime installed on a local machine
+  (<https://docs.docker.com/get-docker/>)
+- k3d installed on a local machine
+  (<https://k3d.io/>)
+- helm installed on a local machine
+  (<https://helm.sh/>)
+- kubectl installed on a local machine
+  (<https://kubernetes.io/docs/tasks/tools/>)
+
+#### Setup
+
+On a machine with the prerequisites available, a bash script can be
+used to setup a local kubernetes cluster with k3d. The script will
+configure a container repository inside the cluster, configure a storage
+class and reserve 10 port for exposing applications on the cluster with
+node ports.
+
+```bash dev/kubernetes/k3d-dev-env-setup.sh```
+
+After configuring the cluster you will need to configure access to the
+cluster.
+
+> Warning: this will overwrite access to an existing cluster
+
+```k3d kubeconfig get mlflow > $HOME/.kube/config```
+
+Images can be built and pushed to the cluster container registry.
+
+```bash dev/kubernetes/build-image.sh```
+
+A quick-start deployment can now be created.
+
+```bash dev/kubernetes/k3d-configure-mlflow-quickstart.sh
 
 ### Writing MLflow Examples
 

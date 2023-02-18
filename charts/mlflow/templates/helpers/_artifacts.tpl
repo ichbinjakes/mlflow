@@ -12,14 +12,6 @@
 {{- else if .Values.artifacts.azure.existingSecret -}}
 - secretRef:
     name: {{ .Values.artifacts.azure.existingSecret }}
-{{/* FTP */}}
-{{- else if .Values.artifacts.ftp.existingSecret -}}
-- secretRef:
-    name: {{ .Values.artifacts.ftp.existingSecret }}
-{{/* SFTP */}}
-{{- else if .Values.artifacts.sftp.existingSecret -}}
-- secretRef:
-    name: {{ .Values.artifacts.sftp.existingSecret }}
 {{- else -}}
 {{- fail "Could not determine artifact store configuration from supplied values" }}
 {{- end -}}
@@ -36,13 +28,10 @@
 {{- else if .Values.artifacts.gcp.defaultArtifactRoot -}}
 - name: DEFAULT_ARTIFACT_ROOT
   value: {{ .Values.artifacts.gcp.defaultArtifactRoot }} 
-{{/* SFTP */}}
-{{- else if .Values.artifacts.sftp.defaultArtifactRoot -}}
-- name: DEFAULT_ARTIFACT_ROOT
-  value: {{ .Values.artifacts.sftp.defaultArtifactRoot }} 
 {{- else -}}
 {{/* AZURE - value from secret */}}
 {{/* FTP - value from secret */}}
+{{/* SFTP - value from secret */}}
 {{- end -}}
 {{- end -}}
 
@@ -57,8 +46,6 @@
 {{ .Chart.AppVersion }}-gcp
 {{- else if .Values.artifacts.azure.existingSecret -}}
 {{ .Chart.AppVersion }}-azure
-{{- else if .Values.artifacts.sftp.defaultArtifactRoot -}}
-{{ .Chart.AppVersion }}-sftp
 {{- else -}}
 {{ .Chart.AppVersion }}
 {{- end -}}

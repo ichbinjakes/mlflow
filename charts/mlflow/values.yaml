@@ -57,20 +57,10 @@ artifacts:
     existingSecret: ""
 
   azure:
+    # TODO:
+    defaultArtifactRoot: ""
     ## @param artifacts.azure.existingSecret secret name containing credentials to access artifact storage on AZURE
     ## This secret must contain the keys `AZURE_STORAGE_CONNECTION_STRING` and `AZURE_STORAGE_ACCESS_KEY`
-    existingSecret: ""
-
-  ftp:
-    ## @param artifacts.ftp.existingSecret secret name containing credentials to access artifact storage via ftp
-    ## This secret must contain the key `DEFAULT_ARTIFACT_ROOT` e.g. ftp://user:pass@host/path/to/dir
-    existingSecret: ""
-  
-  sftp:
-    ## @param artifacts.sftp.defaultArtifactRoot the default S3 artifact root. e.g. sftp://user@host/path/to/dir
-    defaultArtifactRoot: ""
-    ## @param artifacts.sftp.existingSecret secret name containing credentials to access artifact storage via SFTP
-    ## This secret must contain the key `DEFAULT_ARTIFACT_ROOT` and `identity-file.pem`
     existingSecret: ""
 
 
@@ -100,9 +90,11 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+# todo: node port
 service:
   type: ClusterIP
   port: 80
+  nodePort: 32005
 
 ingress:
   enabled: false
@@ -120,7 +112,13 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources: 
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following

@@ -1,0 +1,58 @@
+postgresql:
+  auth:
+    username: mlflow
+    password: mlflow123
+    database: mlflow
+  primary:
+    persistence:
+      storageClass: ""
+
+
+minio:
+  mode: standalone
+
+  rootUser: minio
+  rootPassword: minio123
+  
+  drivesPerNode: 1
+  replicas: 1
+  pools: 1
+
+  resources:
+    requests:
+      memory: 512Mi
+
+  persistence:
+    enabled: true
+    storageClass: ""
+    size: 50Gi
+
+  service:
+    type: NodePort
+    nodePort: 32000
+
+  consoleService:
+    type: NodePort
+    nodePort: 32001
+
+  users:
+    - accessKey: mlflow
+      secretKey: mlflow123
+      policy: consoleAdmin
+
+  buckets:
+    - name: mlflow
+
+
+mlflow:
+  backendStore: 
+    existingSecret: mlflow-quickstart-backend-store-credentials
+  
+  artifacts:
+    s3:
+      defaultArtifactRoot: s3://mlflow
+      existingSecret: mlflow-quickstart-artifact-credentials
+
+  service:
+    type: NodePort
+    nodePort: 32002
