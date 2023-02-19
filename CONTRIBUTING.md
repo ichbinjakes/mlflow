@@ -36,8 +36,9 @@ We welcome community contributions to MLflow. This page provides useful informat
     - [Prerequisites](#prerequisites)
     - [Setup](#setup)
   - [Kubernetes](#Kubernetes)
-    - [Prerequisites](#prerequisites)
-    - [Setup](#setup)
+    - [Prerequisites](#kubernetes-prerequisites)
+    - [Setup](#kubernetes-setup)
+    - [Clean up](#kubernetes-cleanup)
   - [Writing MLflow Examples](#writing-mlflow-examples)
   - [Building a Distributable Artifact](#building-a-distributable-artifact)
   - [Writing Docs](#writing-docs)
@@ -732,7 +733,7 @@ removed.
 To test changes or new features to the helm charts a local cluster can
 be setup with scripts to save configuring your own cluster.
 
-#### Prerequisites
+#### kubernetes prerequisites
 
 - Docker runtime installed on a local machine
   (<https://docs.docker.com/get-docker/>)
@@ -743,30 +744,46 @@ be setup with scripts to save configuring your own cluster.
 - kubectl installed on a local machine
   (<https://kubernetes.io/docs/tasks/tools/>)
 
-#### Setup
+#### kubernetes setup
 
 On a machine with the prerequisites available, a bash script can be
-used to setup a local kubernetes cluster with k3d. The script will
-configure a container repository inside the cluster, configure a storage
-class and reserve 10 port for exposing applications on the cluster with
-node ports.
+used to setup a local k3d kubernetes cluster. The script will
+configure a container repository inside the cluster and reserve the
+ports 32000-32010 on the host for exposing cluster applications with 
+node ports. k3d also configures a storage class for persistent volumes.
 
-```bash dev/kubernetes/k3d-dev-env-setup.sh```
+```bash
+bash dev/kubernetes/k3d-dev-env-setup.sh
+```
 
 After configuring the cluster you will need to configure access to the
 cluster.
 
 > Warning: this will overwrite access to an existing cluster
 
-```k3d kubeconfig get mlflow > $HOME/.kube/config```
+```bash
+k3d kubeconfig get mlflow > $HOME/.kube/config
+```
 
 Images can be built and pushed to the cluster container registry.
 
-```bash dev/kubernetes/build-image.sh```
+```bash
+bash dev/kubernetes/build-image.sh
+```
 
 A quick-start deployment can now be created.
 
-```bash dev/kubernetes/k3d-configure-mlflow-quickstart.sh
+```bash
+dev/kubernetes/k3d-configure-mlflow-quickstart.sh
+```
+
+#### kubernetes cleanup
+
+When the cluster is no longer needed, it can be removed.
+
+```bash
+bash k3d-dev-env-teardown.sh
+```
 
 ### Writing MLflow Examples
 

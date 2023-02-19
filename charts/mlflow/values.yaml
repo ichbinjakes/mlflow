@@ -1,57 +1,55 @@
-# mlflow helm chart to deploy a tracking server 
-
 nameOverride: ""
 fullnameOverride: ""
 
 
 image:
-  ## @param image.repository mlflow image repository
+  ## mlflow image repository
   repository: mlflow/mlflow
-  ## @param image.tag mlflow image tag (default is the chart <appVersion>-<artifact storage type>.)
+  ## mlflow image tag (default is the chart <appVersion>-<artifact storage type>.)
   tag: ""
-  ## @param image.pullPolicy image pull policy
+  ## image pull policy
   pullPolicy: IfNotPresent
-  ## @param image.pullSecrets private registry image pull secrets
+  ## private registry image pull secrets
   pullSecrets: []
   # - name: <secret-name>
 
 
 trackingServer:
-  ## @param trackingServer.enabled enable experiment tracking feature. If set to false mlflow server is started with --artifacts-only
+  ## enable experiment tracking feature. If set to false mlflow server is started with --artifacts-only
   enabled: true
-  ## @param trackingServer.port override the default port to serve on (5000)
+  ## override the default port to expose the tracking server on
   port: 5000
-  ## @param trackingServer.workers override the default number of workers (4)
+  ## override the default number of workers (4)
   workers: ""
-  ## @param trackingServer.metrics enable prometheus metrics at /metrics
+  ## enable prometheus metrics at /metrics
   metrics: true
 
 
 backendStore:
-  ## @param artifacts.sftp.existingSecret secret name containing sqlalchemy connection uri
+  ## secret name containing sqlalchemy connection uri
   ## This secret must contain the key `BACKEND_STORE_URI`
   existingSecret: ""
 
 
 artifacts:
-  ## @param artifacts.serve Enables serving of artifact uploads, downloads, and list requests by routing these requests to the artifact stoorage service
+  ## enables serving of artifact uploads, downloads, and list requests by routing these requests to the artifact storage service
   serve: true
   s3:
-    ## @param artifacts.s3.defaultArtifactRoot the default S3 artifact root. e.g. s3://mlflow
+    ## the default S3 artifact root. e.g. s3://mlflow
     defaultArtifactRoot: ""
-    ## @param artifacts.s3.existingSecret secret name containing credentials to access artifact storage on AWS S3 or MINIO
+    ## secret name containing credentials to access artifact storage on AWS S3 or MINIO
     ## This secret must contain the keys `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
     ## This secret can optionally contain the keys `MLFLOW_S3_UPLOAD_EXTRA_ARGS`, `MLFLOW_S3_ENDPOINT_URL`, `AWS_DEFAULT_REGION`
     ## The optional key `MLFLOW_S3_IGNORE_TLS` can be specified if the caBundleSecret isn't used
     existingSecret: ""
-    ## @param artifacts.s3.caBundleSecret secret name containing a certificate for TLS connection
+    ## secret name containing a certificate for TLS connection
     ## This secret must contain the key ca-bundle.pem
     caBundleSecret: ""
 
   gcp:
-    ## @param artifacts.gcp.defaultArtifactRoot the default GCP Storage artifact root. e.g. gs://mlflow
+    ## the default GCP Storage artifact root. e.g. gs://mlflow
     defaultArtifactRoot: ""
-    ## @param artifacts.gcp.existingSecret secret name containing credentials to access artifact storage on GCP
+    ## secret name containing credentials to access artifact storage on GCP
     ## This secret must contain the key `keyfile.json`
     ## This secret can optionally declare `MLFLOW_GCS_DEFAULT_TIMEOUT`, `MLFLOW_GCS_UPLOAD_CHUNK_SIZE` or `MLFLOW_GCS_DOWNLOAD_CHUNK_SIZE`
     existingSecret: ""
@@ -59,22 +57,21 @@ artifacts:
   azure:
     # TODO:
     defaultArtifactRoot: ""
-    ## @param artifacts.azure.existingSecret secret name containing credentials to access artifact storage on AZURE
+    ## secret name containing credentials to access artifact storage on AZURE
     ## This secret must contain the keys `AZURE_STORAGE_CONNECTION_STRING` and `AZURE_STORAGE_ACCESS_KEY`
     existingSecret: ""
 
 
-## @param client.replicaCount Number of mlflow server replicas to deploy
+## number of mlflow server replicas to deploy
 replicaCount: 1
 
 
 serviceAccount:
-  # Specifies whether a service account should be created
+  ## Specifies whether a service account should be created
   create: true
-  # Annotations to add to the service account
+  ## Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  ## The name of the service account to use. If not set and create is true, a name is generated using the fullname template
   name: ""
 
 podAnnotations: {}
@@ -90,11 +87,12 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-# todo: node port
+
 service:
   type: ClusterIP
   port: 80
   nodePort: 32005
+
 
 ingress:
   enabled: false
@@ -112,13 +110,8 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: 
-  limits:
-    cpu: 500m
-    memory: 512Mi
-  requests:
-    cpu: 100m
-    memory: 128Mi
+
+resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -130,6 +123,7 @@ resources:
   #   cpu: 100m
   #   memory: 128Mi
 
+
 autoscaling:
   enabled: false
   minReplicas: 1
@@ -137,8 +131,11 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
+
 nodeSelector: {}
 
+
 tolerations: []
+
 
 affinity: {}

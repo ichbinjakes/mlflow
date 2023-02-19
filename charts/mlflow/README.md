@@ -1,30 +1,33 @@
-# mlflow Quickstart Helm Chart
+# mlflow Helm Chart
 
 MLflow is an open source platform for managing the end-to-end machine learning lifecycle
 
+## TL;DR
+
+```console
+helm repo add mlflow https://xxxx
+helm install mlflow mlflow/mlflow
+```
+
 ## Introduction
 
-This chart quickly deploys mlflow with minio for artifact storage and postgresql for
-database persistance using the helm package manager. If you want to use another database or artifact storage provider use the mlflow chart.
-
-This chart has three dependencies, the mlflow chart from this repository, 
-the minio chart from the minio repository and the postgres chart from bitnami.
+This chart can be used to deploy a mlflow tracking server to a kubernetes cluster.
+It requires external artifact and sqlalchemy providers. 
 
 ## Prerequisites
 
 - Kubernetes 1.19+
 - Helm 3.2.0+
-- PV provisioner support in the underlying infrastructure
 
 ## Installing the Chart
 
 To install the chart with the release name `mlflow`:
 
 ```console
-helm install mlflow mlflow-quickstart/mlflow
+helm install mlflow mlflow/mlflow
 ```
 
-The command deploys mlflow, minio and postgresql on the Kubernetes cluster in the default configuration. The [Parameters](#parameters) section lists the parameters that can be configured during installation.
+The command deploys mlflow on the Kubernetes cluster in the default configuration. The [Parameters](#parameters) section lists the parameters that can be configured during installation.
 
 > **Tip**: List all releases using `helm list`
 
@@ -40,8 +43,6 @@ The command removes all the Kubernetes components associated with the chart and 
 
 ## Parameters
 
-The 
-
 See `values.yaml` for all the helm chart parameters and descriptions
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
@@ -49,7 +50,9 @@ Specify each parameter using the `--set key=value[,key=value]` argument to `helm
 ```console
 helm install mlflow \
   --set backendStore.existingSecret=mlflow-backend-credentials \
-  mlflow-quickstart/mlflow
+  --set artifacts.s3.defaultArtifactRoot=s3://mlflow \
+  --set artifacts.s3.existingSecret=mlflow-artifact-credentials \
+    mlflow/mlflow
 ```
 
 Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart. For example,
