@@ -1,18 +1,32 @@
 # mlflow Helm Chart
 
-MLflow is an open source platform for managing the end-to-end machine learning lifecycle
+MLflow is an open source platform for managing the end-to-end machine 
+learning lifecycle.
 
 ## TL;DR
 
 ```console
 helm repo add mlflow https://xxxx
-helm install mlflow mlflow/mlflow
+helm install mlflow \
+  --set backendStore.existingSecret=mlflow-backend-credentials \
+  --set artifacts.s3.defaultArtifactRoot=s3://mlflow \
+  --set artifacts.s3.existingSecret=mlflow-artifact-credentials \
+  mlflow/mlflow
 ```
 
 ## Introduction
 
-This chart can be used to deploy a mlflow tracking server to a kubernetes cluster.
-It requires external artifact and sqlalchemy providers. 
+This chart can be used to deploy a mlflow tracking server to a kubernetes
+cluster. This chart requires an external artifact storage provider and
+sqlalchemy compatible database; for this reason chart parameters must be
+set to configure the artifact storage and database backend.
+
+The helm chart supports the following storage providers:
+
+- AWS S3
+- Self hosted MinIO (via S3 configuration parameters)
+- Azure File Storage
+- Google Cloud Storage
 
 ## Prerequisites
 
@@ -24,12 +38,12 @@ It requires external artifact and sqlalchemy providers.
 To install the chart with the release name `mlflow`:
 
 ```console
-helm install mlflow mlflow/mlflow
+helm install mlflow \
+  --set backendStore.existingSecret=mlflow-backend-credentials \
+  --set artifacts.s3.defaultArtifactRoot=s3://mlflow \
+  --set artifacts.s3.existingSecret=mlflow-artifact-credentials \
+  mlflow/mlflow
 ```
-
-The command deploys mlflow on the Kubernetes cluster in the default configuration. The [Parameters](#parameters) section lists the parameters that can be configured during installation.
-
-> **Tip**: List all releases using `helm list`
 
 ## Uninstalling the Chart
 
@@ -60,5 +74,3 @@ Alternatively, a YAML file that specifies the values for the above parameters ca
 ```console
 helm install mlflow -f values.yaml mlflow/mlflow
 ```
-
-> **Tip**: You can use the default [values.yaml](values.yaml)

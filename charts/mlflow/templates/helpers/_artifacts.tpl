@@ -13,7 +13,8 @@
 - secretRef:
     name: {{ .Values.artifacts.azure.existingSecret }}
 {{- else -}}
-{{- fail "Could not determine artifact store configuration from supplied values" }}
+- secretRef:
+    name: mlflow-artifacts-credentials
 {{- end -}}
 {{- end -}}
 
@@ -28,10 +29,12 @@
 {{- else if .Values.artifacts.gcp.defaultArtifactRoot -}}
 - name: DEFAULT_ARTIFACT_ROOT
   value: {{ .Values.artifacts.gcp.defaultArtifactRoot }} 
-{{- else -}}
 {{/* AZURE - value from secret */}}
-{{/* FTP - value from secret */}}
-{{/* SFTP - value from secret */}}
+{{- else if .Values.artifacts.azure.defaultArtifactRoot -}}
+- name: DEFAULT_ARTIFACT_ROOT
+  value: {{ .Values.artifacts.azure.defaultArtifactRoot }} 
+{{- else -}}
+{{  fail "Could not determine default artifact root from supplied values" }}
 {{- end -}}
 {{- end -}}
 
@@ -40,12 +43,6 @@
 {{- define "mlflow.imageTag" -}}
 {{- if .Values.image.tag -}}
 {{ .Values.image.tag }}
-{{- else if .Values.artifacts.s3.defaultArtifactRoot -}}
-{{ .Chart.AppVersion }}-aws
-{{- else if .Values.artifacts.gcp.defaultArtifactRoot -}}
-{{ .Chart.AppVersion }}-gcp
-{{- else if .Values.artifacts.azure.existingSecret -}}
-{{ .Chart.AppVersion }}-azure
 {{- else -}}
 {{ .Chart.AppVersion }}
 {{- end -}}

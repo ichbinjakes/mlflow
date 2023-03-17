@@ -1,6 +1,7 @@
 ## PostgreSQL parameters
 postgresql:
-
+  ## enable deployment of postgres
+  enabled: true
   ## Authentication parameters
   auth:
     ## @param auth.username: Name for a custom user to create
@@ -19,9 +20,10 @@ postgresql:
 
 ## MinIO parameters
 minio:
+  enabled: true
+
   ## MinIO mode, i.e. standalone or distributed
   mode: standalone
-
 
   ## Set default root user
   rootUser: minio
@@ -96,6 +98,15 @@ minio:
   buckets:
     - name: mlflow
 
+
+## configuration for external services
+external:
+  database:
+    enabled: false
+    uri: ""
+  artifacts:
+    defaultArtifactRoot: ""
+    
 
 ## mlflow Parameters
 mlflow:
