@@ -35,4 +35,3 @@
 {{  fail "Could not resolve `backend store uri` from supplied values" }}
 {{- end -}}
 {{- end -}}
-

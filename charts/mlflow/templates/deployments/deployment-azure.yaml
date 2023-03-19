@@ -13,12 +13,12 @@ spec:
     matchLabels:
       {{- include "mlflow.selectorLabels" . | nindent 6 }}
   template:
-    {{ include "mlflow.deploymentTemplateMetadataValues" . | nindent 4 }}
+    {{- include "mlflow.deploymentTemplateMetadataValues" . | nindent 4 }}
     spec:
-      {{ include "mlflow.deploymentCommonTemplateSpecValues" . | nindent 6 }}
+      {{- include "mlflow.deploymentCommonTemplateSpecValues" . | nindent 6 }}
       containers:
         - name: {{ .Chart.Name }}
-          {{ include "mlflow.trackingServerContainerCommonValues" . | nindent 10 }}          
+          {{- include "mlflow.trackingServerContainerCommonValues" . | nindent 10 }}          
           env:
             {{- include "mlflow.defaultArtifactRoot" . | nindent 12 }}
             {{- include "mlflow.backendStoreUri" . | nindent 12 }}

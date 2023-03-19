@@ -10,7 +10,6 @@ metadata:
 {{- end -}}
 
 
-
 {{/* mlflow deployment commen template spec configuration values */}}
 {{- define "mlflow.deploymentCommonTemplateSpecValues" -}}
 {{- with .Values.image.pullSecrets }}
@@ -59,4 +58,3 @@ readinessProbe:
 resources:
   {{- toYaml .Values.resources | nindent 2 }}
 {{- end -}}
-
