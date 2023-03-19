@@ -1,6 +1,6 @@
 #! /bin/bash
 
-VERSION=2.1.1
+VERSION=2.2.1
 
 docker build \
     -t k3d-mlflow-registry.localhost:12000/mlflow/mlflow:$VERSION \
@@ -8,4 +8,4 @@ docker build \
     --file docker/tracking-server.Dockerfile \
     docker
 
-docker push k3d-mlflow-registry.localhost:12000/mlflow/mlflow:2.1.1
+docker push k3d-mlflow-registry.localhost:12000/mlflow/mlflow:$VERSION

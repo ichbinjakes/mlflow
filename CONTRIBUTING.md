@@ -751,7 +751,7 @@ be setup with scripts to save configuring your own cluster.
 On a machine with the prerequisites available, a bash script can be
 used to setup a local k3d kubernetes cluster. The script will
 configure a container repository inside the cluster and reserve the
-ports 32000-32010 on the host for exposing cluster applications with 
+ports 32000-32002 on the host for exposing cluster applications with 
 node ports. k3d also configures a `local-path` storage class for persistent volumes.
 
 ```bash
@@ -776,8 +776,11 @@ bash dev/kubernetes/build-image.sh
 A quick-start deployment can now be created.
 
 ```bash
-dev/kubernetes/k3d-configure-mlflow-quickstart.sh
+bash dev/kubernetes/k3d-configure-mlflow-quickstart.sh
 ```
+
+A simple test script is also availble for testing logging models
+in `dev/kubernetes/tests`
 
 #### kubernetes cleanup
 

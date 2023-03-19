@@ -1,14 +1,19 @@
 # mlflow Quickstart Helm Chart
 
-MLflow is an open source platform for managing the end-to-end machine learning lifecycle
+MLflow is an open source platform for managing the end-to-end machine learning lifecycle.
 
 ## Introduction
 
-This chart quickly deploys mlflow with minio for artifact storage and postgresql for
-database persistance using the helm package manager. If you want to use another database or artifact storage provider use the mlflow chart.
+This chart quickly deploys a mlflow tracking server instance along
+with MinIO (artifact storage) and PostgreSQL (database persistance) 
+using sub charts. If you would like to use another database or
+artifact storage provider use the mlflow chart.
 
-This chart has three dependencies, the mlflow chart from this repository, 
-the minio chart from the minio repository and the postgres chart from bitnami.
+This chart has three dependencies:
+
+- The mlflow chart (this repository)
+- A MinIO chart (MinIO repository)
+- A PostgreSQL chart (bitnami).
 
 ## Prerequisites
 
@@ -21,12 +26,18 @@ the minio chart from the minio repository and the postgres chart from bitnami.
 To install the chart with the release name `mlflow`:
 
 ```console
-helm install mlflow mlflow-quickstart/mlflow
+helm install mlflow /path/to/chart
 ```
+> Depending on your cluster, you will likely want to set the following values:
+> - `minio.persistence.storageClass`
+> - `mlflow.service.type=NodePort` or configure ingress
+> - `minio.service.type-NodePort` or configure ingress
 
-The command deploys mlflow, minio and postgresql on the Kubernetes cluster in the default configuration. The [Parameters](#parameters) section lists the parameters that can be configured during installation.
+The command deploys mlflow, minio and postgresql on the Kubernetes 
+cluster in the default configuration. 
 
-> **Tip**: List all releases using `helm list`
+> :warning: If you want to use this in a production setting, please change
+> MinIO and PostgreSQL default credentials.
 
 ## Uninstalling the Chart
 
@@ -39,8 +50,6 @@ helm delete mlflow
 The command removes all the Kubernetes components associated with the chart and deletes the release.
 
 ## Parameters
-
-The 
 
 See `values.yaml` for all the helm chart parameters and descriptions
 
@@ -57,5 +66,3 @@ Alternatively, a YAML file that specifies the values for the above parameters ca
 ```console
 helm install mlflow -f values.yaml mlflow/mlflow
 ```
-
-> **Tip**: You can use the default [values.yaml](values.yaml)

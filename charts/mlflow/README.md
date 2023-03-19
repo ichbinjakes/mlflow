@@ -6,8 +6,7 @@ learning lifecycle.
 ## TL;DR
 
 ```console
-helm repo add mlflow https://xxxx
-helm install mlflow \
+helm install mlflow /path/to/chart \
   --set backendStore.existingSecret=mlflow-backend-credentials \
   --set artifacts.s3.defaultArtifactRoot=s3://mlflow \
   --set artifacts.s3.existingSecret=mlflow-artifact-credentials \
@@ -17,7 +16,7 @@ helm install mlflow \
 ## Introduction
 
 This chart can be used to deploy a mlflow tracking server to a kubernetes
-cluster. This chart requires an external artifact storage provider and
+cluster. This chart requires an external artifact storage provider and a
 sqlalchemy compatible database; for this reason chart parameters must be
 set to configure the artifact storage and database backend.
 
@@ -44,6 +43,10 @@ helm install mlflow \
   --set artifacts.s3.existingSecret=mlflow-artifact-credentials \
   mlflow/mlflow
 ```
+
+> You will likely want to expose mlflow for acces through
+> a browser or from your data science environment. This can be configured
+> using an ingress or node port. See the `values.yaml` file for more details.
 
 ## Uninstalling the Chart
 
