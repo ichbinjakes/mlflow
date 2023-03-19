@@ -22,7 +22,7 @@ trackingServer:
   ## override the default number of workers (4)
   workers: ""
   ## enable prometheus metrics at /metrics
-  metrics: true
+  metrics: false
 
 
 backendStore:
@@ -36,7 +36,7 @@ backendStore:
 
 artifacts:
   ## enables serving of artifact uploads, downloads, and list requests by routing these requests to the artifact storage service
-  serve: true
+  serve: false
   
   s3:
     ## the default S3 artifact root. e.g. s3://mlflow
@@ -44,11 +44,10 @@ artifacts:
     ## secret name containing credentials to access artifact storage on AWS S3 or MINIO
     ## This secret must contain the keys `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
     ## This secret can optionally contain the keys `MLFLOW_S3_UPLOAD_EXTRA_ARGS`, `MLFLOW_S3_ENDPOINT_URL`, `AWS_DEFAULT_REGION`, `MLFLOW_S3_UPLOAD_EXTRA_ARGS`
-    ## The optional key `MLFLOW_S3_IGNORE_TLS` can be specified if the caBundleSecret isn't used
+    ## The optional key `MLFLOW_S3_IGNORE_TLS` can be specified if the caBundleExistingSecret isn't used
     existingSecret: ""
     ## secret name containing a certificate for TLS connection
     ## This secret must contain the key ca-bundle.crt 
-    # TODO: remove
     caBundleExistingSecret: ""
 
     ## create a secret for connecting to S3 / Minio for artifact storage
@@ -58,7 +57,6 @@ artifacts:
       endpointUrl: ""
       defaultRegion: ""
       ignoreTls: ""
-      extraUploadArgs: ""
 
     # create secret for the CA bundle
     createCaSecret:
@@ -71,15 +69,11 @@ artifacts:
     defaultArtifactRoot: ""
     ## secret name containing credentials to access artifact storage on GCP
     ## This secret must contain the key `keyfile.json`
-    ## This secret can optionally declare `MLFLOW_GCS_DEFAULT_TIMEOUT`, `MLFLOW_GCS_UPLOAD_CHUNK_SIZE` or `MLFLOW_GCS_DOWNLOAD_CHUNK_SIZE`
     existingSecret: ""
 
     ## create a secret for connecting to GCP for artifact storage
     createSecret:
       keyFile: ""
-      mlflowGcsDefaultTimeout: ""
-      mlflowGcsUploadChunkSize: ""
-      mlflowGcsDownloadChunkSize: ""
 
 
   azure:

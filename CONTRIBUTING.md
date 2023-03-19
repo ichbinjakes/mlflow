@@ -741,6 +741,8 @@ be setup with scripts to save configuring your own cluster.
   (<https://k3d.io/>)
 - helm installed on a local machine
   (<https://helm.sh/>)
+- helm-unittests plugin
+  (https://github.com/helm-unittest/helm-unittest)
 - kubectl installed on a local machine
   (<https://kubernetes.io/docs/tasks/tools/>)
 

@@ -1,15 +1,11 @@
-{{/*
-Expand the name of the chart.
-*/}}
+{{/* Expand the name of the chart. */}}
 {{- define "mlflow.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
-{{/*
-Create a default fully qualified app name.
+{{/* Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
-*/}}
+If release name contains chart name it will be used as a full name. */}}
 {{- define "mlflow.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
@@ -23,16 +19,12 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 {{- end }}
 
-{{/*
-Create chart name and version as used by the chart label.
-*/}}
+{{/* Create chart name and version as used by the chart label. */}}
 {{- define "mlflow.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
-{{/*
-Common labels
-*/}}
+{{/* Common labels */}}
 {{- define "mlflow.labels" -}}
 helm.sh/chart: {{ include "mlflow.chart" . }}
 {{ include "mlflow.selectorLabels" . }}
@@ -42,17 +34,13 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
-{{/*
-Selector labels
-*/}}
+{{/* Selector labels */}}
 {{- define "mlflow.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "mlflow.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{/*
-Create the name of the service account to use
-*/}}
+{{/* Create the name of the service account to use */}}
 {{- define "mlflow.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
 {{- default (include "mlflow.fullname" .) .Values.serviceAccount.name }}
@@ -60,3 +48,8 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/* Default secret name for artifact credentials */}}
+{{- define "mlflow.artifactCredentialName" -}}
+mlflow-artifacts-credentials
+{{- end -}}
