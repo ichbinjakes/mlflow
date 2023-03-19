@@ -19,4 +19,4 @@ k3d cluster \
 k3d kubeconfig get mlflow > $HOME/.kube/config
 
 
-bash dev/kubernetes/build-images.sh
+bash dev/kubernetes/build-image.sh

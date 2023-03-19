@@ -18,6 +18,7 @@ postgresql:
       ## @param primary.persistence.storageClass: PVC Storage Class for PostgreSQL Primary data volume
       storageClass: ""
 
+
 ## MinIO parameters
 minio:
   enabled: true
@@ -98,15 +99,6 @@ minio:
   buckets:
     - name: mlflow
 
-
-## configuration for external services
-external:
-  database:
-    enabled: false
-    uri: ""
-  artifacts:
-    defaultArtifactRoot: ""
-    
 
 ## mlflow Parameters
 mlflow:

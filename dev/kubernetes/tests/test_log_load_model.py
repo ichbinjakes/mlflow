@@ -40,8 +40,10 @@ def config():
 def test_kubernetes_tracking_server(model, model_signature, config):
 
     with mock.patch.dict(os.environ, config):
-        experiment_id = mlflow.get_experiment_by_name("test").experiment_id
-        if not experiment_id:
+        experiment = mlflow.get_experiment_by_name("test")
+        if experiment:
+            experiment_id = experiment.experiment_id
+        else:
             experiment_id = mlflow.create_experiment("test")
 
         with mlflow.start_run(experiment_id=experiment_id) as run:
