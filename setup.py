@@ -140,8 +140,8 @@ setup(
             # a remote Kubernetes cluster
             "kubernetes",
             # Required to serve models through MLServer
-            "mlserver>=1.2.0.dev13",
-            "mlserver-mlflow>=1.2.0.dev13",
+            "mlserver>=1.2.0",
+            "mlserver-mlflow>=1.2.0",
             "virtualenv",
             # Required for exporting metrics from the MLflow server to Prometheus
             # as part of the MLflow server monitoring add-on
@@ -149,7 +149,7 @@ setup(
         ],
         "databricks": [
             # Required to write model artifacts to unity catalog locations
-            "azure-storage-blob>12",
+            "azure-storage-file-datalake>12",
             "google-cloud-storage>=1.30.0",
             "boto3>1",
         ],
@@ -159,6 +159,9 @@ setup(
     entry_points="""
         [console_scripts]
         mlflow=mlflow.cli:cli
+
+        [mlflow.app]
+        basic-auth=mlflow.server.auth:app
     """,
     cmdclass={
         "dependencies": ListDependencies,
